@@ -4,6 +4,15 @@ const pages = {};
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const report = process.env.npm_config_report;
+const isProduction = process.env.NODE_ENV === "production";
+const cdn = {
+  css: [],
+  js: [
+    "https://cdn.bootcss.com/vue/2.6.10/vue.min.js",
+    "https://cdn.bootcss.com/vue-router/3.1.3/vue-router.min.js",
+    "https://cdn.bootcss.com/vuex/3.1.1/vuex.min.js"
+  ]
+};
 
 glob.sync("./src/pages/**/main.js").forEach(path => {
   const chunk = path.split("./src/pages/")[1].split("/main.js")[0];
@@ -16,10 +25,32 @@ glob.sync("./src/pages/**/main.js").forEach(path => {
 });
 module.exports = {
   pages,
-  chainWebpack: config => config.plugins.delete("named-chunks"),
+  chainWebpack: config => {
+    config.plugins.delete("named-chunks");
+    if (isProduction) {
+      // 生产环境注入cdn + 多页面
+      glob.sync("./src/pages/**/main.js").forEach(path => {
+        const chunk = path.split("./src/pages/")[1].split("/main.js")[0];
+        config.plugin("html-" + chunk).tap(args => {
+          args[0].cdn = cdn;
+          return args;
+        });
+      });
+    }
+  },
+
   configureWebpack: config => {
     if (report) {
       config.plugins.push(new BundleAnalyzerPlugin());
+    }
+    if (isProduction) {
+      config.externals = {
+        vue: "Vue",
+        vuex: "Vuex",
+        "vue-router": "VueRouter"
+        // 'alias-name': 'ObjName'
+        // 写法: 中划线: 上驼峰
+      };
     }
   },
   devServer: {
