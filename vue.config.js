@@ -6,6 +6,9 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 const report = process.env.npm_config_report;
 const webpack = require("webpack");
 const isProduction = process.env.NODE_ENV === "production";
+const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
+const path = require("path");
+
 const cdn = {
   css: [],
   js: [
@@ -59,6 +62,15 @@ module.exports = {
           context: process.cwd(),
           manifest: require(`./public/vendor/${name}-manifest.json`)
         });
+      }),
+      // 将 dll 注入到 生成的 html 模板中
+      new AddAssetHtmlPlugin({
+        // dll文件位置
+        filepath: path.resolve(__dirname, "./public/vendor/*.js"),
+        // dll 引用路径
+        publicPath: "./vendor",
+        // dll最终输出的目录
+        outputPath: "./vendor"
       })
     );
   },
