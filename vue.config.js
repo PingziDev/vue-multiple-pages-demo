@@ -4,13 +4,14 @@ const pages = {};
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const report = process.env.npm_config_report;
+const webpack = require("webpack");
 const isProduction = process.env.NODE_ENV === "production";
 const cdn = {
   css: [],
   js: [
-    "https://cdn.bootcss.com/vue/2.6.10/vue.min.js",
-    "https://cdn.bootcss.com/vue-router/3.1.3/vue-router.min.js",
-    "https://cdn.bootcss.com/vuex/3.1.1/vuex.min.js"
+    "https://cdn.bootcss.com/vue/2.6.10/vue.min.js"
+    // "https://cdn.bootcss.com/vue-router/3.1.3/vue-router.min.js",
+    // "https://cdn.bootcss.com/vuex/3.1.1/vuex.min.js"
   ]
 };
 
@@ -45,13 +46,21 @@ module.exports = {
     }
     if (isProduction) {
       config.externals = {
-        vue: "Vue",
-        vuex: "Vuex",
-        "vue-router": "VueRouter"
+        vue: "Vue"
+        // vuex: "Vuex",
+        // "vue-router": "VueRouter"
         // 'alias-name': 'ObjName'
         // 写法: 中划线: 上驼峰
       };
     }
+    config.plugins.push(
+      ...["core"].map(name => {
+        return new webpack.DllReferencePlugin({
+          context: process.cwd(),
+          manifest: require(`./public/vendor/${name}-manifest.json`)
+        });
+      })
+    );
   },
   devServer: {
     proxy: {
