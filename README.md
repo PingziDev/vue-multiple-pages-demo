@@ -1,5 +1,7 @@
 # vue-multiple-pages-demo
 
+项目说明: [https://juejin.im/post/5e1301cb6fb9a048011b5036](https://juejin.im/post/5e1301cb6fb9a048011b5036)
+
 ## Project setup
 ```
 yarn install
