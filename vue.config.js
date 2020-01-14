@@ -1,4 +1,4 @@
-const titles = require("./title.js");
+const titles = require("./config.title.js");
 const glob = require("glob");
 const pages = {};
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
@@ -8,6 +8,7 @@ const webpack = require("webpack");
 const isProduction = process.env.NODE_ENV === "production";
 const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 const path = require("path");
+const dll = require('./config.dll.js')
 
 const cdn = {
   css: [],
@@ -57,7 +58,7 @@ module.exports = {
       };
     }
     config.plugins.push(
-      ...["core"].map(name => {
+      ...Object.keys(dll).map(name => {
         return new webpack.DllReferencePlugin({
           context: process.cwd(),
           manifest: require(`./public/vendor/${name}-manifest.json`)

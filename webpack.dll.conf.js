@@ -1,15 +1,11 @@
 const path = require('path')
 const webpack = require('webpack')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-
+const dll = require('./config.dll.js')
 // dll文件存放的目录
 const dllPath = 'public/vendor'
-
 module.exports = {
-    entry: {
-        core: ['vue-router','vuex'],
-        // other: [],
-    },
+    entry: dll,
     output: {
         path: path.join(__dirname, dllPath),
         filename: '[name].dll.js',
