@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        I'm Index
+        <router-view></router-view>
     </div>
 </template>
 

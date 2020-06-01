@@ -1,13 +1,16 @@
 {
-  "name": "vue-multiple-pages-demo",
+  "name": "component-single",
   "version": "0.1.0",
   "private": true,
+  "main": "lib/index.umd.min.js",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
-    "analyze": "npm_config_report=true npm run build"
+    "analyze": "npm_config_report=true npm run build",
+    "component-single": "vue-cli-service build --target lib --name index --dest lib ./src/components/index.js"
   },
   "dependencies": {
     "core-js": "^3.4.4",

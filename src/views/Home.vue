@@ -1,17 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <component-sfc></component-sfc>
+    <component-jsx></component-jsx>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-export default {
-  name: 'home',
-  components: {
-    HelloWorld
+  import Vue from 'vue'
+  // dev
+  import { ComponentJsx, ComponentSfc } from '@/components'
+  // use from local lib
+  // import { ComponentJsx, ComponentSfc } from './../../lib/index.umd'
+  // use from node_modules
+  // import { ComponentJsx, ComponentSfc } from 'component-single'
+
+  Vue.use(ComponentSfc)
+  Vue.use(ComponentJsx)
+
+  export default {
+    name: 'home',
+    components: {},
   }
-}
 </script>
